@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     password:{
         type: String
     },
-    username:{
+    name:{
         type: String,
     },
     interests:{

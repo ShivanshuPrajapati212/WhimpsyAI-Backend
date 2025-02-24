@@ -1,19 +1,24 @@
-const express = require("express")
-const router = express.Router()
-const { body, validationResult } = require("express-validator")
 
+const express = require('express');
+const passport = require('passport');
+const { signup, getProfile, logout } = require('../../controllers/auth/auth.js');
+const { isAuthenticated } = require('../../middleware/authMiddleware.js');
 
-const {signUp, login} = require("../../controllers/auth/auth")
+const router = express.Router();
 
-router.post("/signup",[
-    body('email', 'Enter a valid email').isEmail(),
-    body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
-  ], signUp
-)
-router.post("/login",[
-    body('email', 'Enter a valid email').isEmail(),
-    body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
-  ], login
-)
+router.post('/signup', signup);
+router.post('/login', passport.authenticate('local'), (req, res) => {
+  res.json({ message: 'Logged in', user: req.user });
+});
 
-module.exports = router 
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google/callback', 
+  passport.authenticate('google', { successRedirect:"http://localhost:5173/profile",
+    failureRedirect:"http://localhost:5173/login" }),
+  (req, res) => res.redirect('/profile')
+);
+
+router.get('/profile', isAuthenticated, getProfile);
+router.post('/logout', logout);
+
+module.exports = router;

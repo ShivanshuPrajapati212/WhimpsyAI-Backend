@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors")
 require("dotenv").config()
-const connectToMongo = require("./lib/mongo.js")
-const authRoutes = require('./routes/auth/auth.js');
-const { errorHandler } = require('./middleware/authMiddleware.js');
+const connectToMongo = require("./config/mongo.conf.js")
+const authRoutes = require('./routes/auth.routes.js');
+const { errorHandler } = require('./middleware/auth.middleware.js');
 const session = require('express-session');
-const configurePassport = require('./config/passport.js'); // Add this line
+const configurePassport = require('./config/passport.conf.js'); // Add this line
 connectToMongo();
 
 const PORT = process.env.PORT || 5000

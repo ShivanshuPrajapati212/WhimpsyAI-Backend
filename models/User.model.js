@@ -13,8 +13,11 @@ const UserSchema = new Schema({
     name:{
         type: String,
     },
-    interests:{
-        type: Array
+    interests:[{ type: String }],
+    xp:{
+        type: Number,
+        min: 0,
+        default: 0
     }
   });
   const User = mongoose.model('user', UserSchema);

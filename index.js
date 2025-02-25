@@ -3,6 +3,7 @@ const cors = require("cors")
 require("dotenv").config()
 const connectToMongo = require("./config/mongo.conf.js")
 const authRoutes = require('./routes/auth.routes.js');
+const userRoutes = require('./routes/user.routes.js');
 const { errorHandler } = require('./middleware/auth.middleware.js');
 const session = require('express-session');
 const configurePassport = require('./config/passport.conf.js'); // Add this line
@@ -36,6 +37,7 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 app.use(errorHandler);
 
 

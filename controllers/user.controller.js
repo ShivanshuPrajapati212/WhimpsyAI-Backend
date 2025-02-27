@@ -1,4 +1,3 @@
-const { serializeUser } = require('passport');
 const User = require('../models/User.model.js');
 const updateUser = async (req, res) => {
     try{

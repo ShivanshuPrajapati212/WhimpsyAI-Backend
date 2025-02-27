@@ -14,6 +14,7 @@ const UserSchema = new Schema({
         type: String,
     },
     interests:[{ type: String }],
+    learnedTopics:[{ type: String }],
     xp:{
         type: Number,
         min: 0,

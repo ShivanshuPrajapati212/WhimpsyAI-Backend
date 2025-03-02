@@ -1,5 +1,7 @@
 const Topic = require("../models/Topic.model.js");
-const {generateTopic} = require("../config/gemini.conf.js")
+const User = require("../models/User.model.js")
+const {generateTopic} = require("../config/gemini.conf.js");
+const { getVideos } = require("../config/youtubeapi.conf.js");
 
 const getTopic = async (req, res) => {
   try {
@@ -9,16 +11,29 @@ const getTopic = async (req, res) => {
       return res.status(400).json({ error: "Insufficient Data" });
     }
 
-    const id = req.user._id.toString();
+    let user = await User.findById(req.user._id)
 
     const result = await generateTopic(interests, learnedTopics)
+    const videos = await getVideos(result.keyword)
 
-    const topic = Topic.create({
-        topicName: result.topic,
-        
+    let resources = []
+
+    videos.map(e => resources.push({type: "video", link: e}))
+
+    const topic = new Topic({
+        user: req.user._id,
+        topicName: result.title,
+        resources: resources
     })
 
-    return res.status(200).json(user);
+    const savedTopic = await topic.save()
+
+    const updatedUser = user;
+    updatedUser.learnedTopics.push(result.title)
+
+    await User.findOneAndUpdate(req.user._id, {$set: updatedUser}, {new: true})
+
+    return res.status(200).json(savedTopic);
   } catch (error) {
     res.status(400).json({ error: "Internal Server error" });
   }

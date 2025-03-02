@@ -11,20 +11,27 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash", systemInstru
 
 const generateTopic = async (interests, learnedTopics) =>{
     
-    const prompt = {
-        type: "user",
-        interests: interests,
-        learnedTopics
-    };
-    const result = await model.generateContent(JSON.stringify(prompt), {
-        generationConfig: {
-            maxOutputTokens: 500,
-        }
-    })
-
-    const res = await JSON.parse(result.response.text())
-
-    return res.topic
+   try {
+     const prompt = {
+         type: "user",
+         interests: interests,
+         learnedTopics
+     };
+     const result = await model.generateContent(JSON.stringify(prompt), {
+         generationConfig: {
+             maxOutputTokens: 500,
+         }
+     })
+ 
+     const res = await JSON.parse(result.response.text())
+ 
+     return res.topic
+   } catch (error) {
+    return "error"
+   }
 }
+
+// generateTopic(['web', 'mern']).then(e => console.log(e))
+// { title: 'Next.js', keyword: 'Next.js React' }
 
 module.exports = { generateTopic }

@@ -13,7 +13,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback', 
-  passport.authenticate('google', { successRedirect:"http://localhost:5173/profile",
+  passport.authenticate('google', { successRedirect:"http://localhost:5173/onboarding",
     failureRedirect:"http://localhost:5173/login" }),
   (req, res) => res.redirect('/profile')
 );

@@ -2,6 +2,7 @@ const Topic = require("../models/Topic.model.js");
 const User = require("../models/User.model.js")
 const {generateTopic} = require("../config/gemini.conf.js");
 const { getVideos } = require("../config/youtubeapi.conf.js");
+const { getArticles } = require("../config/search.conf.js");
 
 const getTopic = async (req, res) => {
   try {
@@ -15,10 +16,12 @@ const getTopic = async (req, res) => {
 
     const result = await generateTopic(interests, learnedTopics)
     const videos = await getVideos(result.keyword)
+    const sites = await getArticles(result.keyword)
 
     let resources = []
 
     videos.map(e => resources.push({type: "video", link: e}))
+    sites.map(e => resources.push({type: "article", link: e.link, additionalInfo: e.additionalInfo}))
 
     const topic = new Topic({
         user: req.user._id,

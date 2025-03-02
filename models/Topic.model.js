@@ -10,6 +10,7 @@ const topicSchema = new mongoose.Schema({
     {
       type: { type: String, enum: ["video", "article", "x"] },
       link: { type: String },
+      additionalInfo: { type: Object },
     },
   ],
   date: {

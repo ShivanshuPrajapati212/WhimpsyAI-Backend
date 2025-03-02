@@ -11,7 +11,13 @@ const getVideos = async (query) => {
      let videos = [];
  
      response.data.items.map((e)=>{
-         videos.push(`https://youtube.com/watch?v=${e.id.videoId}/`)
+         videos.push({
+          link: `https://youtube.com/watch?v=${e.id.videoId}/`,
+          additionalInfo: {
+            title: e.snippet.title,
+            desc: e.snippet.description
+          }
+         })
      })
      
      return videos; 

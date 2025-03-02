@@ -3,6 +3,7 @@ const User = require("../models/User.model.js")
 const {generateTopic} = require("../config/gemini.conf.js");
 const { getVideos } = require("../config/youtubeapi.conf.js");
 const { getArticles } = require("../config/search.conf.js");
+const { isMoreThan24Hours } = require("../helpers/time.helper.js");
 
 const getTopic = async (req, res) => {
   try {
@@ -10,6 +11,13 @@ const getTopic = async (req, res) => {
 
     if (!interests) {
       return res.status(400).json({ error: "Insufficient Data" });
+    }
+
+    const oldTopic = await Topic.findOne({user: req.user._id})
+
+
+    if(oldTopic && !isMoreThan24Hours(oldTopic.date)){
+      return res.status(200).json(oldTopic);
     }
 
     let user = await User.findById(req.user._id)
@@ -20,7 +28,7 @@ const getTopic = async (req, res) => {
 
     let resources = []
 
-    videos.map(e => resources.push({type: "video", link: e}))
+    videos.map(e => resources.push({type: "video", link: e.link, additionalInfo: e.additionalInfo}))
     sites.map(e => resources.push({type: "article", link: e.link, additionalInfo: e.additionalInfo}))
 
     const topic = new Topic({

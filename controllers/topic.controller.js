@@ -17,6 +17,7 @@ const getTopic = async (req, res) => {
 
 
     if(oldTopic && !isMoreThan24Hours(oldTopic.date)){
+      console.log("old")
       return res.status(200).json(oldTopic);
     }
 
@@ -43,7 +44,7 @@ const getTopic = async (req, res) => {
     updatedUser.learnedTopics.push(result.title)
 
     await User.findOneAndUpdate(req.user._id, {$set: updatedUser}, {new: true})
-
+    console.log("new")
     return res.status(200).json(savedTopic);
   } catch (error) {
     res.status(400).json({ error: "Internal Server error" });

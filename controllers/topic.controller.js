@@ -15,7 +15,6 @@ const getTopic = async (req, res) => {
 
     const oldTopic = await Topic.findOne({user: req.user._id})
 
-
     if(oldTopic && !isMoreThan24Hours(oldTopic.date)){
       console.log("old")
       return res.status(200).json(oldTopic);

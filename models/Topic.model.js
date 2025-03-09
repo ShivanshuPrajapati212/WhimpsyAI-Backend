@@ -11,6 +11,10 @@ const topicSchema = new mongoose.Schema({
       type: { type: String, enum: ["video", "article", "x"] },
       link: { type: String },
       additionalInfo: { type: Object },
+      isLearnt: {
+        type: Boolean,
+        default: false
+      }
     },
   ],
   date: {

@@ -50,4 +50,44 @@ const getTopic = async (req, res) => {
   }
 };
 
-module.exports = { getTopic };
+const isLearnt = async (req, res) => {
+  try {
+    const { resourceId } = req.body;
+
+    if (!resourceId) {
+      return res.status(400).json({ error: "Provide resource id" });
+    }
+
+    const topic = await Topic.findOne({user: req.user._id})
+
+    if(!topic){
+      return res.status(400).json({ error: "Provide resource id, Topic not found" })
+    }
+
+    const resource = topic.resources.find((e)=> e._id == resourceId)
+
+    if(!resource){
+      return res.status(400).json({error: "Provide a valid resource id"})
+    }
+
+    const idx = topic.resources.indexOf(resource)
+
+    if(topic.resources[idx].isLearnt == true){
+      return res.status(400).json({error: "Already learnt"})
+    }
+
+    let updatedTopic = topic
+
+    updatedTopic.resources[idx].isLearnt = true
+
+    const savedTopic = await Topic.findByIdAndUpdate(topic._id, {$set: updatedTopic}, {new: true})
+
+    await User.findByIdAndUpdate(req.user._id, { $set: { xp: req.user.xp+20 }}, {new: true})
+
+    return res.status(200).json(savedTopic)
+  } catch (error) {
+    return res.status(400).json({ error: "Internal Server error" });
+  }
+}
+
+module.exports = { getTopic, isLearnt };

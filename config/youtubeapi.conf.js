@@ -6,7 +6,7 @@ const maxResults = 3
 
 const getVideos = async (query) => {
    try {
-     const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=${query}&type=video&part=snippet&relevanceLanguage=en&maxResults=${maxResults}`)
+     const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&q=${query}&type=video&part=snippet&relevanceLanguage=en&videoDuration=medium&maxResults=${maxResults}`)
  
      let videos = [];
  
@@ -19,7 +19,6 @@ const getVideos = async (query) => {
           }
          })
      })
-     
      return videos; 
    } catch (error) {
     return "error"

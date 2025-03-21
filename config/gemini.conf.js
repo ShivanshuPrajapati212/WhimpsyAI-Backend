@@ -27,7 +27,7 @@ const generateTopic = async (interests, learnedTopics) =>{
  
      return res.topic
    } catch (error) {
-    return "error"
+    return error
    }
 }
 

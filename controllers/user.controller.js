@@ -15,9 +15,9 @@ const updateUser = async (req, res) => {
         newUser.name = name
         newUser.interests = interests
 
-        user = await User.findByIdAndUpdate(id, { $set: newUser }, { new: true })
+        const updatedUser = await User.findByIdAndUpdate(id, { $set: newUser }, { new: true })
 
-        return res.status(200).json(user);
+        return res.status(200).json(updatedUser);
     } catch(error) {
         res.status(400).json({error: "Internal Server error"})
     }

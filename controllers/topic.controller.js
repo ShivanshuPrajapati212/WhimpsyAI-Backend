@@ -10,21 +10,27 @@ const getTopic = async (req, res) => {
     const { interests, learnedTopics } = req.user;
 
     if (!interests) {
-      return res.status(400).json({ error: "Insufficient Data" });
+      console.log("hi")
+      return res.status(500).json({ error: "Insufficient Data" });
     }
 
     const oldTopic = await Topic.findOne({user: req.user._id})
 
     if(oldTopic && !isMoreThan24Hours(oldTopic.date)){
-      console.log("old")
+      console.log("old topic")
       return res.status(200).json(oldTopic);
+    }
+    
+    if(oldTopic && isMoreThan24Hours(oldTopic.date)){
+      console.log("deleted old topic")
+      await Topic.findByIdAndDelete(oldTopic._id)
     }
 
     let user = await User.findById(req.user._id)
 
     const result = await generateTopic(interests, learnedTopics)
-    const videos = await getVideos(result.keyword)
-    const sites = await getArticles(result.keyword)
+    const videos = await getVideos(result.keyword + " tutorial")
+    const sites = await getArticles(result.keyword + " tutorial")
 
     let resources = []
 
@@ -46,6 +52,7 @@ const getTopic = async (req, res) => {
     console.log("new")
     return res.status(200).json(savedTopic);
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error: "Internal Server error" });
   }
 };

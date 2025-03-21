@@ -6,6 +6,8 @@ const { isAuthenticated } = require('../middleware/auth.middleware.js');
 
 const router = express.Router();
 
+const FRONTEND_URL = process.env.FRONTEND_URL
+
 router.post('/signup', signup);
 router.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({ message: 'Logged in', user: req.user });
@@ -13,8 +15,8 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback', 
-  passport.authenticate('google', { successRedirect:"http://localhost:5173/onboarding",
-    failureRedirect:"http://localhost:5173/login" }),
+  passport.authenticate('google', { successRedirect:`${FRONTEND_URL}/onboarding`,
+    failureRedirect:`${FRONTEND_URL}/login` }),
   (req, res) => res.redirect('/profile')
 );
 

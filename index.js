@@ -17,7 +17,7 @@ const app = express();
 const passport = configurePassport();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: '*',
     credentials: true
   }));
 app.use(express.json())
@@ -45,5 +45,5 @@ app.use(errorHandler);
 
 
 app.listen(PORT, ()=> {
-    console.log(`Server is running on http://localhost:${PORT}`)
+    console.log(`Server is running on PORT: ${PORT}`)
 })

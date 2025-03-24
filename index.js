@@ -36,6 +36,9 @@ app.use(passport.session());
 app.get('/', (req, res)=>{
     res.send("Welcome to Whimpsy AI")
 })
+app.get('/hello', (req, res)=>{
+    res.send("Hello from WhimpsyAI's Backend")
+})
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);

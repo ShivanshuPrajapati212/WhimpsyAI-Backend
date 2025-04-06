@@ -16,7 +16,9 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback', 
   passport.authenticate('google', { successRedirect:`${FRONTEND_URL}/onboarding`,
-    failureRedirect:`${FRONTEND_URL}/login` }),
+    failureRedirect:`${FRONTEND_URL}/login` }, ()=>{
+      "from passport callback"
+    }),
   (req, res) => res.redirect('/profile')
 );
 

@@ -22,12 +22,14 @@ app.use(cors({
   }));
 app.use(express.json())
 
+app.set('trust proxy', 1); // Trust first proxy (required for secure cookies in production)
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  sameSite: 'none'
 }));
 app.use(passport.initialize());
 app.use(passport.session());

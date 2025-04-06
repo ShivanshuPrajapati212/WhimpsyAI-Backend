@@ -20,6 +20,8 @@ const signup = async (req, res, next) => {
 };
 
 const getProfile = (req, res) => {
+  console.log('User:', req.user);
+  console.log('Session:', req.session);
   res.json(req.user);
 };
 

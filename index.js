@@ -6,7 +6,7 @@ const authRoutes = require('./routes/auth.routes.js');
 const userRoutes = require('./routes/user.routes.js');
 const topicRoutes = require('./routes/topic.routes.js');
 const { errorHandler } = require('./middleware/auth.middleware.js');
-const session = require('express-session');
+var session = require('cookie-session');
 const configurePassport = require('./config/passport.conf.js'); // Add this line
 connectToMongo();
 

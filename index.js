@@ -26,13 +26,15 @@ app.set('trust proxy', 1); // Trust first proxy (required for secure cookies in 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  name: 'whimpsyai-session',
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    secure: true, // Always use secure cookies
     httpOnly: true,
     sameSite: 'none', // Required for cross-origin cookies
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   },
 }));
 app.use(passport.initialize());

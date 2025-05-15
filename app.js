@@ -31,10 +31,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true, // Always use secure cookies
-    httpOnly: true,
-    sameSite: 'none', // Required for cross-origin cookies
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    secure: true
   },
 }));
 app.use(passport.initialize());

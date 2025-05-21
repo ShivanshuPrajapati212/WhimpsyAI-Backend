@@ -6,7 +6,6 @@ const authRoutes = require('./routes/auth.routes.js');
 const userRoutes = require('./routes/user.routes.js');
 const topicRoutes = require('./routes/topic.routes.js');
 const { errorHandler } = require('./middleware/auth.middleware.js');
-const session = require('cookie-session');
 const { configurePassport } = require('./config/passport.conf.js');
 const passport = require('passport');
 
@@ -24,36 +23,19 @@ app.use(cors({
   credentials: true
 }));
 
+// Trust first proxy for secure cookies in production
+app.set('trust proxy', 1);
+
 // Parse JSON request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Trust first proxy for secure cookies in production
-app.set('trust proxy', 1);
-
-// Session setup
-app.use(session({
-  name: 'whimpsyai-session',
-  secret: process.env.SESSION_SECRET || 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
-
-// Initialize passport
+// Initialize passport for authentication
 app.use(passport.initialize());
-
-// Sessions only used for social auth flow
-app.use(passport.session());
 
 // Basic routes
 app.get('/', (req, res) => {
-  res.send("Welcome to Whimpsy AI");
+  res.send("Welcome to WhimpsyAI API");
 });
 
 app.get('/hello', (req, res) => {
